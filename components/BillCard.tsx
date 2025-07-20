@@ -152,8 +152,11 @@ const BillCard: React.FC<BillCardProps> = ({ bill, onDelete, onPrint }) => {
               <tr key={item.id} className="border-b border-gray-100 last:border-none">
                 <td className="py-1.5 font-medium text-gray-800">{item.name}</td>
                 <td className="py-1.5 text-center">{item.quantity}</td>
-                <td className="py-1.5 text-right">₹{Number(item.price).toFixed(2)}</td>
-                <td className="py-1.5 text-right">₹{(item.quantity * item.price).toFixed(2)}</td>
+                <td className="py-1.5 text-right">₹{!isNaN(Number(item.price)) ? Number(item.price).toFixed(2) : '0.00'}
+                </td>
+                <td className="py-1.5 text-right">₹{!isNaN(Number(item.price)) && !isNaN(Number(item.quantity))? (Number(item.quantity) * Number(item.price)).toFixed(2): '0.00'}
+                </td>
+
               </tr>
             ))}
           </tbody>
