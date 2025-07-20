@@ -9,20 +9,30 @@ const App: React.FC = () => {
   const [bills, setBills] = useState<Bill[]>([]);
   const [billToPrint, setBillToPrint] = useState<Bill | null>(null);
 
-  useEffect(() => {
+useEffect(() => {
   const unsub = onSnapshot(collection(db, "bills"), (snapshot) => {
     const billsData = snapshot.docs
       .map(doc => {
         const data = doc.data();
+
         let timestampDate = null;
         if (data.timestamp && typeof data.timestamp.toDate === "function") {
           timestampDate = data.timestamp.toDate();
         } else if (typeof data.timestamp === "string") {
           timestampDate = new Date(data.timestamp);
         }
+
+        const sanitizedItems = (data.items || []).map((item: any) => ({
+          ...item,
+          price: typeof item.price === "string"
+            ? parseFloat(item.price.replace(/[^\d.]/g, '')) || 0
+            : Number(item.price) || 0,
+        }));
+
         return {
           id: doc.id,
           ...data,
+          items: sanitizedItems,
           timestamp: timestampDate,
         };
       })
@@ -33,6 +43,7 @@ const App: React.FC = () => {
 
   return () => unsub();
 }, []);
+
 
 
   const handlePrintBill = (bill: Bill) => {
