@@ -1,0 +1,6 @@
+{
+  "name": "Restaurant Bill Dashboard",
+  "description": "A dashboard to view, manage, and automatically print or download restaurant bills. It provides a clean interface for tracking bills by table number and viewing detailed itemized receipts.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
